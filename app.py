@@ -11,43 +11,30 @@ st.write("""
 This application predicts **Customer Satisfaction Score (CSAT)** based on key service metrics.
 """)
 
-st.subheader("Why These Features Matter")
-
-st.markdown("""
-- **Response Time (minutes)** – how quickly support replies  
-- **Survey Delay (hours)** – time before customer feedback  
-- **Sentiment Score (-1 to 1)** – emotional tone of feedback
-""")
-
 st.subheader("Enter Service Metrics")
 
 response_time = st.number_input(
     "Response Time (minutes)",
     min_value=0.0,
-    max_value=300.0,
-    value=10.0,
-    key="rt"
+    key="response_time_input"
 )
 
 survey_delay = st.number_input(
     "Survey Delay (hours)",
     min_value=0.0,
-    max_value=72.0,
-    value=2.0,
-    key="sd"
+    key="survey_delay_input"
 )
 
 sentiment_score = st.number_input(
     "Sentiment Score (-1 to 1)",
     min_value=-1.0,
     max_value=1.0,
-    value=0.0,
-    key="ss"
+    key="sentiment_score_input"
 )
 
-if st.button("Predict CSAT"):
+features = np.array([[response_time, survey_delay, sentiment_score]])
 
-    features = np.array([[response_time, survey_delay, sentiment_score]])
+if st.button("Predict CSAT"):
 
     expected_features = model.n_features_in_
 
@@ -58,12 +45,3 @@ if st.button("Predict CSAT"):
     prediction = model.predict(features)
 
     st.success(f"Predicted CSAT Score: {prediction[0]}")
-
-st.markdown("---")
-
-st.markdown("""
-### Model Information
-- Model: Random Forest
-- Features: Service metrics + sentiment
-- Goal: Predict customer satisfaction
-""")
