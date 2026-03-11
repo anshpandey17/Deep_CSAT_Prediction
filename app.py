@@ -74,3 +74,42 @@ st.markdown("""
 - **Features:** Service metrics + sentiment analysis  
 - **Goal:** Predict customer satisfaction to help improve support performance
 """)
+survey_delay = st.number_input(
+    "Survey Delay (hours)",
+    min_value=0.0,
+    max_value=72.0,
+    value=2.0,
+    help="Time between issue resolution and when the customer submitted the feedback survey."
+)
+
+sentiment_score = st.number_input(
+    "Sentiment Score (-1 to 1)",
+    min_value=-1.0,
+    max_value=1.0,
+    value=0.0,
+    help="Sentiment polarity of the customer remark. -1 = negative, 0 = neutral, +1 = positive."
+)
+
+if st.button("Predict CSAT"):
+
+    features = np.array([[response_time, survey_delay, sentiment_score]])
+
+    expected_features = model.n_features_in_
+
+    if features.shape[1] < expected_features:
+        padding = np.zeros((1, expected_features - features.shape[1]))
+        features = np.hstack((features, padding))
+
+    prediction = model.predict(features)
+
+    st.success(f"Predicted CSAT Score: {prediction[0]}")
+
+st.markdown("---")
+
+st.markdown("""
+### About the Model
+- **Model Used:** Random Forest Classifier  
+- **Training Data:** Customer support interactions  
+- **Features:** Service metrics + sentiment analysis  
+- **Goal:** Predict customer satisfaction to help improve support performance
+""")
