@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import numpy as np
 
-model = joblib.load("csat_random_forest_model.pkl")
+model = joblib.load("model_compressed.pkl")
 
 st.title("Customer Satisfaction Prediction")
 
